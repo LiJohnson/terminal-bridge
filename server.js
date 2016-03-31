@@ -1,10 +1,16 @@
-var app = require('express');
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+var socketIo = require('socket.io');
+var IoServer = function (app) {
+    var io = socketIo(app);
 
+    io.on('connection',function( socket ){
+        console.log('someone comes');
+        
+        socket.on('disconnect',function () {
+            console.log('someone gone');
+        });
+    });
+};
 
-io.on('connection',function( socket ){
-	console.log('someone comes');
-});
-
-server.listen(9090);
+module.exports = function( app ) {
+    new IoServer(app);
+}
