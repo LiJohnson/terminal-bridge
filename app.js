@@ -25,6 +25,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 
+app.get('/config.json',function(req,res){
+  res.sendFile(__dirname + '/config.json');
+}).get('/socket.io-stream.js',function(req,res){
+  res.sendFile(__dirname + '/node_modules/socket.io-stream/socket.io-stream.js');
+}).get('/terminal.js',function(req,res){
+  res.sendFile(__dirname + '/node_modules/terminal.js/dist/terminal.js');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -55,6 +63,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

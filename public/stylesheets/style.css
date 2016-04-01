@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+.terminaljs {
+	background: black;
+	color: white;
+	font-family: Courier, monospace;
+	display:inline-block;
+}

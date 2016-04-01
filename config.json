@@ -1,4 +1,5 @@
 {
     "webClient" : "client",
-    "serverClient" : "server"
+    "serverClient" : "server",
+    "login" : "source  ~/.profile"
 }

@@ -3,10 +3,13 @@ extends layout
 
 block content
 	script(src='/socket.io/socket.io.js')
-	script(src='')
+	script(src='/socket.io-stream.js')
+	script(src='/terminal.js')
+
 	h1= title
 	form
 		input(name='data')
 		input(type='submit')
 
-	script(src='/javascripts/client.js')
+	pre(class='terminaljs',data-columns='80',data-rows='24')
+	script(src='/js/client.js')

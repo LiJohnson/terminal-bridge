@@ -14,4 +14,12 @@
         return false;
     });
 
+    var contain = $('.terminaljs9') || {};
+    var term = new Terminal( contain.dataset );
+    var stream = ss.createStream({decodeStrings: false, encoding: 'utf-8'});
+    
+    ss(socket).emit('terminal', stream, contain.dataset);
+    stream.pipe(term).dom(contain).pipe(stream);
+
+
 })(window.io , function(s){ return document.querySelector(s); });
