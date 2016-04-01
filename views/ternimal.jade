@@ -3,6 +3,10 @@ extends layout
 
 block content
 	script(src='/socket.io/socket.io.js')
-	script(src='/javascripts/client.js')
+	script(src='')
 	h1= title
-	p Welcome to #{title}
+	form
+		input(name='data')
+		input(type='submit')
+
+	script(src='/javascripts/client.js')
