@@ -1,12 +1,15 @@
 var socketIo = require('socket.io');
 var IoServer = function (app) {
     var io = socketIo(app);
-
-    io.on('connection',function( socket ){
-        console.log('someone comes');
-        
-        socket.on('disconnect',function () {
-            console.log('someone gone');
+    
+    ['webClient','serverClient'].forEach(function (name) {
+        io.of(name).on('connection',function( socket ){
+            console.log(name,'someone comes' );
+            socket.on('disconnect',function () {
+                console.log('serverClient','someone gone');
+            }).on('ha',function (params) {
+                
+            });
         });
     });
 };
