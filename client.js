@@ -19,7 +19,7 @@ socket.on('connect',function(){
 
 ss(socket).on('terminal',function(stream,options){
 	console.log('stream in');
-	var pro = pty.spawn('/bin/bash', ['-c', config.login], options);
+	var pro = pty.spawn('/bin/bash', [], options);
 	pro.stdout.pipe(stream).pipe(pro.stdin);
 	socket.on('disconnect',function(){
 		pro.kill('SIGHUP');

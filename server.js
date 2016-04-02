@@ -1,6 +1,7 @@
 var socketIo = require('socket.io');
 var config = require('./config');
 var ss = require('socket.io-stream');
+var pty = require('child_pty');
 
 var IoServer = function (app) {
     var io = socketIo(app);
