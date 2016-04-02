@@ -4,8 +4,9 @@ var config = require('./config');
 var ss = require('socket.io-stream');
 var pty = require('child_pty');
 
-var url = 'ws://' + (argv.server || 'lcs.com:3000');
+var url = 'ws://' + (argv.server);
 
+console.log(url);
 var socket = client.connect( url ,{reconnect:true});
 var proMap = {};
 
