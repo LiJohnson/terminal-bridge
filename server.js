@@ -23,9 +23,14 @@ var IoServer = function (app) {
 
         ss(socket).on('terminal',function(stream,options){
             console.log('proxyStream');
+            options = options || {};
+            options.id = socket.id;
             var proxyStream = ss.createStream({decodeStrings: false, encoding: 'utf-8'});
             ss(map[config.serverClient]).emit('terminal',proxyStream,options);
             proxyStream.pipe(stream).pipe(proxyStream);
+        });
+        socket.on('disconnect',function(){
+            map[config.serverClient].emit('kill',socket.id);
         });
     });
     

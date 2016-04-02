@@ -7,6 +7,7 @@ var pty = require('child_pty');
 var url = 'ws://' + (argv.server || 'lcs.com:3000');
 
 var socket = client.connect( url ,{reconnect:true});
+var proMap = {};
 
 socket.on('connect',function(){
 	console.log('connected');
@@ -14,14 +15,15 @@ socket.on('connect',function(){
 }).on('data',function (params) {
     console.log('data',params);
     socket.emit(config.webClient , 'I see ' + params );
-})
+}).on('kill',function(id){
+	console.log(new Date , 'kill' , id , !!proMap[id] );
+	proMap[id] && proMap[id].kill('SIGHUP');
+});
 
 
 ss(socket).on('terminal',function(stream,options){
 	console.log('stream in');
 	var pro = pty.spawn('/bin/bash', [], options);
 	pro.stdout.pipe(stream).pipe(pro.stdin);
-	socket.on('disconnect',function(){
-		pro.kill('SIGHUP');
-	});
+	proMap[options.id] = pro;
 });
