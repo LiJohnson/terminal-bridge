@@ -1,3 +1,4 @@
 # ternimal-bridge
 
-git@github.com:Gottox/node-webterm.git
+
+help from [node-webterm](https://github.com/Gottox/node-webterm)
