@@ -3,9 +3,12 @@
     var socket = new io();
     socket.on('connect',function () {
         console.log('connected');
+        socket.emit('join','client');
     }).on('data',function (params) {
         console.log(params);
-    }).emit('join','client');
+    }).on('message',function (message) {
+        alert(message);
+    });
 
     $('form').addEventListener('submit',function(e){
         socket.emit('server',this.elements[0].value);

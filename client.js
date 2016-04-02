@@ -18,8 +18,9 @@ socket.on('connect',function(){
 }).on('kill',function(id){
 	console.log(new Date , 'kill' , id , !!proMap[id] );
 	proMap[id] && proMap[id].kill('SIGHUP');
+}).on('disconnect',function(){
+	console.log('disconnect');
 });
-
 
 ss(socket).on('terminal',function(stream,options){
 	console.log('stream in');

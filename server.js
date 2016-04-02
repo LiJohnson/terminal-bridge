@@ -5,16 +5,20 @@ var pty = require('child_pty');
 
 var IoServer = function (app) {
     var io = socketIo(app);
-    var map = {};
+    var serverClient = false;
     io.on('connection',function (socket) {
         console.log('someone come ' , socket.id);
         socket.on('disconnect',function(params) {
             console.log('someone gone ' , socket.id);
         }).on('join',function (room) {
-            map[room] = socket;
             socket.join(room,function () {
                 console.log( 'join in' , room , socket.id );
             });
+            if( room == config.serverClient ){
+                serverClient && serverClient.disconnect();
+                serverClient = socket;
+                io.to(config.webClient).emit('message','a new serverClient works now')
+            }
         }).on(config.webClient,function (params) {
             io.to(config.webClient).emit('data',params);
         }).on(config.serverClient,function (params) {
@@ -25,12 +29,18 @@ var IoServer = function (app) {
             console.log('proxyStream');
             options = options || {};
             options.id = socket.id;
+
+            if(!serverClient || serverClient.disconnected ){
+                socket.emit('message','serverClient not work');
+                return;
+            }
+
             var proxyStream = ss.createStream({decodeStrings: false, encoding: 'utf-8'});
-            ss(map[config.serverClient]).emit('terminal',proxyStream,options);
+            ss(serverClient).emit('terminal',proxyStream,options);
             proxyStream.pipe(stream).pipe(proxyStream);
         });
         socket.on('disconnect',function(){
-            map[config.serverClient].emit('kill',socket.id);
+            serverClient && serverClient.emit('kill',socket.id);
         });
     });
     
