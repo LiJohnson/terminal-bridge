@@ -8,6 +8,12 @@ var IoServer = function (app) {
     var serverClient = false;
     io.on('connection',function (socket) {
         console.log('someone come ' , socket.id);
+
+        var serverClientEmit = function(type,params){
+            serverClient && serverClient.connected && serverClient.emit(type,socket.id,params);
+
+        };
+
         socket.on('disconnect',function(params) {
             console.log('someone gone ' , socket.id);
         }).on('join',function (room) {
@@ -23,6 +29,10 @@ var IoServer = function (app) {
             io.to(config.webClient).emit('data',params);
         }).on(config.serverClient,function (params) {
             io.to(config.serverClient).emit('data',params);
+        }).on('resize' , function(size){
+            serverClientEmit('resize',size);
+        }).on('disconnect',function(){
+            serverClientEmit('kill');
         });
 
         ss(socket).on('terminal',function(stream,options){
@@ -38,9 +48,6 @@ var IoServer = function (app) {
             var proxyStream = ss.createStream({decodeStrings: false, encoding: 'utf-8'});
             ss(serverClient).emit('terminal',proxyStream,options);
             proxyStream.pipe(stream).pipe(proxyStream);
-        });
-        socket.on('disconnect',function(){
-            serverClient && serverClient.emit('kill',socket.id);
         });
     });
     

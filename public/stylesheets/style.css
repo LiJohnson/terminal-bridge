@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: black;
 }
 
 a {
@@ -9,6 +10,13 @@ a {
 
 
 .terminaljs {
+	position: fixed;
+	top:3px;
+	left:3px;
+	bottom: 3px;
+	right: 3px;
+	margin: 0px;
+	padding-bottom: 0px;
 	background: black;
 	color: white;
 	font-family: Courier, monospace;
